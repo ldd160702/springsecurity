@@ -3,14 +3,16 @@ package com.example.springsecurity.controller;
 import com.example.springsecurity.model.UserEntity;
 import com.example.springsecurity.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -26,6 +28,11 @@ public class WebController {
         }
 
         return new ModelAndView("home"); // Trả về home.jsp
+    }
+
+    @RequestMapping("/login-page")
+    public ModelAndView loginPage() {
+        return new ModelAndView("login-page");
     }
 
     @RequestMapping("/admin")
@@ -87,6 +94,15 @@ public class WebController {
     public ModelAndView test() {
         // Trả về test.jsp
         return new ModelAndView("test");
+    }
+
+    @RequestMapping(value = "/admin/delete")
+    public ModelAndView deleteUser(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+        System.out.println(id);
+        service.deleteUserById(id);
+
+        redirectAttributes.addFlashAttribute("message", "User deleted successfully");
+        return new ModelAndView("redirect:/admin");
     }
 
     public boolean isAdmin() {

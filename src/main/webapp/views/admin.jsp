@@ -24,7 +24,7 @@
             <td>${user.id}</td>
             <td>${user.username}</td>
             <td>${user.enabled}</td>
-            <td><a href="${pageContext.request.contextPath}/admin/delete/${user.username}">Delete</a></td>
+            <td><a href="${pageContext.request.contextPath}/admin/delete?id=${user.id}">Delete</a></td>
         </tr>
     </c:forEach>
     </tbody>

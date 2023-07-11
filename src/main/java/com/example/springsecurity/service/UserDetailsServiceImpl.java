@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
 
-        if (user.isEnabled() == false) {
+        if (!user.isEnabled()) {
             throw new UsernameNotFoundException("User is disabled");
         }
 
@@ -68,6 +68,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Iterable<UserEntity> iterable = userRepository.findAll();
         iterable.forEach(users::add);
         return users;
+    }
+
+    public UserEntity getUserById(int id) {
+        UserEntity user = userRepository.findById(id).get();
+        return user;
+    }
+
+    public void deleteUserById(int id) {
+        userRepository.deleteById(id);
     }
 }
 

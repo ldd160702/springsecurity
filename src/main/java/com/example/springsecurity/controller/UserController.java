@@ -5,6 +5,7 @@ import com.example.springsecurity.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,20 +37,16 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @RequestMapping(value = "/admin/delete/{username}")
+    @RequestMapping(value = "/admin/delete/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public RedirectView deleteUser(@PathVariable String username, RedirectAttributes redirectAttributes) {
-        UserEntity user = service.getUserByUsername(username);
+    public void deleteUser(@PathVariable int id) {
+        UserEntity user = service.getUserById(id);
 
         if (user == null) {
-            redirectAttributes.addFlashAttribute("message", "User does not exist");
-            return new RedirectView("/admin");
+            throw new NotFoundException("user not found");
         }
 
-        service.deleteUserByUsername(username);
-
-        redirectAttributes.addFlashAttribute("message", "User deleted successfully");
-        return new RedirectView("/admin");
+        service.deleteUserById(id);
     }
 
 
