@@ -98,9 +98,7 @@ public class WebController {
 
     @RequestMapping(value = "/admin/delete")
     public ModelAndView deleteUser(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
-        System.out.println(id);
         service.deleteUserById(id);
-
         redirectAttributes.addFlashAttribute("message", "User deleted successfully");
         return new ModelAndView("redirect:/admin");
     }
