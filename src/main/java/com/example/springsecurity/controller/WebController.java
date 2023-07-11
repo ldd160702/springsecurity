@@ -2,20 +2,16 @@ package com.example.springsecurity.controller;
 
 import com.example.springsecurity.model.UserEntity;
 import com.example.springsecurity.service.UserDetailsServiceImpl;
-import com.sun.xml.bind.util.AttributesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -53,7 +49,7 @@ public class WebController {
         userModelAndView.addObject("user", "user");
         return userModelAndView; // Trả về user.jsp
     }
-    
+
     @RequestMapping("/hello")
     public ModelAndView hello(Authentication authentication) {
         ModelAndView helloModelAndView = new ModelAndView("hello");
@@ -63,13 +59,12 @@ public class WebController {
         } else {
             //helloModelAndView.addObject("role", "user");
         }
-        return helloModelAndView; // Trả về hello.jsp
+        return helloModelAndView; // Trả về
     }
 
     @RequestMapping(value = "/admin/addUser", method = RequestMethod.POST)
     public ModelAndView addUser(@RequestParam("username") String username,
-                                @RequestParam("password") String password,
-                                RedirectAttributes redirectAttributes) {
+                                @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
         UserEntity user = new UserEntity(username, password);
         user.setEnabled(1);
         try {
